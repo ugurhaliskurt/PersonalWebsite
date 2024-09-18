@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  web:
+    image: nginx:alpine
+    volumes:
+      - ./public:/usr/share/nginx/html  # Mount the public folder for real-time editing
+    expose:
+      - 80  # Correctly exposing port 80 to other services in the same network
+
+  caddy:
+    image: caddy:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - web
+
+  # Backend
+  backend:
+    build: ./backend  # Dockerfile will be in the backend directory
+    volumes:
+      - ./backend:/app  # Mount the backend code for real-time editing
+    depends_on:
+      - postgres  # Ensure PostgreSQL starts before backend
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-mydatabase}
+    expose:
+      - 5000  # Expose for backend API or services if needed (adjust if necessary)
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-mydatabase}
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    expose:
+      - 5432  # Expose PostgreSQL database port
+
+volumes:
+  caddy_data:
+  caddy_config:
+  pg_data:

@@ -1,0 +1,35 @@
+# .gitignore
+# Ignore Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore Nginx
+nginx.conf
+
+# Ignore docker volumes and data
+pg_data/
+caddy_data/
+caddy_config/
+
+# Ignore Docker images and containers
+*.log
+*.pid
+
+# Ignore build outputs
+*.o
+*.out
+
+# Ignore CMake build directories
+build/
+
+# Node modules (if you add any JS frameworks later)
+node_modules/
+
+# Ignore IDE specific files
+.vscode/
+.idea/
+*.swp
+
+# Ignore environment files
+.env
