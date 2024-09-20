@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bakıcı Paneli - BebeBakıcısıMerkezi</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #e6f2ff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4a90e2;
+            text-decoration: none;
+        }
+        .logo img {
+            width: 40px;
+            margin-right: 10px;
+        }
+        .nav-links a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #333;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: #ff69b4;
+        }
+        main {
+            padding: 2rem 0;
+        }
+        h1, h2 {
+            color: #4a90e2;
+        }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        .dashboard-section {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .schedule-item, .job-request {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .schedule-item h3, .job-request h3 {
+            margin-top: 0;
+        }
+        button {
+            background-color: #ff69b4;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #ff1493;
+        }
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 1rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+        #calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-top: 1rem;
+        }
+        .calendar-day {
+            background-color: #f0f0f0;
+            padding: 5px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        .calendar-day.busy {
+            background-color: #ffcccb;
+        }
+        .calendar-day.available {
+            background-color: #90ee90;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <a href="index.html" class="logo">
+                <img src="/placeholder.svg?height=40&width=40" alt="BebeBakıcısıMerkezi Logo">
+                BebeBakıcısıMerkezi
+            </a>
+            <div class="nav-links">
+                <a href="#profil">Profil</a>
+                <a href="#mesajlar">Mesajlar</a>
+                <a href="#yardim">Yardım</a>
+                <a href="#cikis">Çıkış</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1>Hoş Geldiniz, [Bakıcı Adı]</h1>
+        <div class="dashboard-grid">
+            <section class="dashboard-section">
+                <h2>Programınız</h2>
+                <div id="calendar"></div>
+                <div class="schedule-item">
+                    <h3>Yılmaz Ailesi</h3>
+                    <p>Tarih: 25 Haziran 2023</p>
+                    <p>Saat: 14:00 - 18:00</p>
+                    <p>Adres: Atatürk Cad. No:123, Kadıköy/İstanbul</p>
+                    <button onclick="cancelJob(this)">İptal Et</button>
+                </div>
+                <div class="schedule-item">
+                    <h3>Demir Ailesi</h3>
+                    <p>Tarih: 30 Haziran 2023</p>
+                    <p>Saat: 09:00 - 17:00</p>
+                    <p>Adres: Bağdat Cad. No:456, Maltepe/İstanbul</p>
+                    <button onclick="cancelJob(this)">İptal Et</button>
+                </div>
+            </section>
+            <section class="dashboard-section">
+                <h2>İş Talepleri</h2>
+                <div class="job-request">
+                    <h3>Kaya Ailesi</h3>
+                    <p>Tarih: 2 Temmuz 2023</p>
+                    <p>Saat: 10:00 - 15:00</p>
+                    <p>Adres: Moda Cad. No:789, Kadıköy/İstanbul</p>
+                    <button onclick="acceptJob(this)">Kabul Et</button>
+                    <button onclick="rejectJob(this)">Reddet</button>
+                </div>
+            </section>
+        </div>
+        <section class="dashboard-section">
+            <h2>Uygunluk Durumu</h2>
+            <form id="availabilityForm">
+                <label for="availableDate">Tarih:</label>
+                <input type="date" id="availableDate" required>
+                <label for="availableTime">Saat:</label>
+                <input type="time" id="availableTime" required>
+                <label for="availableDuration">Süre (saat):</label>
+                <input type="number" id="availableDuration" required>
+                <button type="submit">Uygunluk Ekle</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 BebeBakıcısıMerkezi. Tüm hakları saklıdır.</p>
+            <div>
+                <a href="kullanimKosullari.html">Kullanım Koşulları</a>
+                <a href="gizlilik.html">Gizlilik Politikası</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function cancelJob(button) {
+            const jobElement = button.closest('.schedule-item');
+            if (confirm('Bu işi iptal etmek istediğinizden emin misiniz?')) {
+                jobElement.remove();
+                alert('İş başarıyla iptal edildi.');
+            }
+        }
+
+        function acceptJob(button) {
+            const jobElement = button.closest('.job-request');
+            jobElement.innerHTML = '<p>İş talebi kabul edildi. Programınıza eklenmiştir.</p>';
+        }
+
+        function rejectJob(button) {
+            const jobElement = button.closest('.job-request');
+            jobElement.remove();
+            alert('İş talebi reddedildi.');
+        }
+
+        document.getElementById('availabilityForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const date = document.getElementById('availableDate').value;
+            const time = document.getElementById('availableTime').value;
+            const duration = document.getElementById('availableDuration').value;
+            alert(`Uygunluk eklendi: Tarih: ${date}, Saat: ${time}, Süre: ${duration} saat`);
+        });
+
+        // Simple calendar implementation
+        const calendar = document.getElementById('calendar');
+        const today = new Date();
+        const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+        const monthEnd = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+        for (let i = 1; i <= monthEnd.getDate(); i++) {
+            const day = document.createElement('div');
+            day.classList.add('calendar-day');
+            day.textContent = i;
+            
+            // Randomly set some days as busy or available for demonstration
+            if (Math.random() < 0.3) {
+                day.classList.add('busy');
+            } else if (Math.random() < 0.5) {
+                day.classList.add('available');
+            }
+            
+            calendar.appendChild(day);
+        }
+    </script>
+</body>
+</html>

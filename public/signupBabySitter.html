@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ücretsiz Kayıt Olun - BebeBakıcısıMerkezi</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #e6f2ff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4a90e2;
+            text-decoration: none;
+        }
+        .logo img {
+            width: 40px;
+            margin-right: 10px;
+        }
+        .nav-links a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #333;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: #ff69b4;
+        }
+        main {
+            padding: 2rem 0;
+        }
+        .registration-container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #4a90e2;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .registration-form {
+            display: grid;
+            gap: 1rem;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .submit-button {
+            padding: 10px;
+            background-color: #ff69b4;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        .submit-button:hover {
+            background-color: #ff1493;
+        }
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 1rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: #333;
+            margin: 2px 0;
+            transition: 0.4s;
+        }
+        @media screen and (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                background-color: #fff;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .nav-links a {
+                margin: 10px 0;
+                padding: 10px;
+                text-align: center;
+            }
+            .hamburger {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <a href="index.html" class="logo">
+                <img src="/placeholder.svg?height=40&width=40" alt="BebeBakıcısıMerkezi Logo">
+                BebeBakıcısıMerkezi
+            </a>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Ana Sayfa</a>
+                <a href="howWorks.html">Nasıl Çalışır</a>
+                <a href="forBabySitters.html">Bakıcılar İçin</a>
+                <a href="forParents.html">Ebeveynler İçin</a>
+                <a href="giris.html">Giriş</a>
+            </div>
+        </nav>
+    </header>
+
+    <script>
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+    </script>
+    
+    <main class="container">
+        <div class="registration-container">
+            <h1>Ücretsiz Kayıt Olun</h1>
+            <form class="registration-form">
+                <div class="form-group">
+                    <label for="fullName">Ad Soyad</label>
+                    <input type="text" id="fullName" name="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">E-posta Adresi</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Şifre</label>
+                    <input type="password" id="password" name="password" required minlength="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Şifreniz en az 8 karakter uzunluğunda olmalı ve en az bir rakam, bir küçük harf ve bir büyük harf içermelidir.">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Şifre Tekrarı</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Telefon Numarası</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="birthDate">Doğum Tarihi</label>
+                    <input type="date" id="birthDate" name="birthDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="education">Eğitim Durumu</label>
+                    <select id="education" name="education" required>
+                        <option value="">Seçiniz</option>
+                        <option value="lise">Lise</option>
+                        <option value="onlisans">Ön Lisans</option>
+                        <option value="lisans">Lisans</option>
+                        <option value="yukseklisans">Yüksek Lisans</option>
+                        <option value="doktora">Doktora</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="field">Eğitim Alanı</label>
+                    <input type="text" id="field" name="field" placeholder="Örn: Çocuk Gelişimi, Psikoloji, vb.">
+                </div>
+                <div class="form-group">
+                    <label for="experience">Deneyim (Yıl)</label>
+                    <input type="number" id="experience" name="experience" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="pastExperiences">Geçmiş Deneyimler</label>
+                    <textarea id="pastExperiences" name="pastExperiences" placeholder="Lütfen geçmiş iş deneyimlerinizi ve referanslarınızı belirtin." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="languages">Bildiğiniz Diller</label>
+                    <input type="text" id="languages" name="languages" placeholder="Örn: Türkçe, İngilizce, Almanca" required>
+                </div>
+                <div class="form-group">
+                    <label for="hourlyRate">Saatlik Ücret Talebi (TL)</label>
+                    <input type="number" id="hourlyRate" name="hourlyRate" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="dailyRate">Günlük Ücret Talebi (TL)</label>
+                    <input type="number" id="dailyRate" name="dailyRate" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="monthlyRate">Aylık Ücret Talebi (TL)</label>
+                    <input type="number" id="monthlyRate" name="monthlyRate" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="availability">Çalışma Saatleri</label>
+                    <select id="availability" name="availability" required>
+                        <option value="">Seçiniz</option>
+                        <option value="fullTime">Tam Zamanlı</option>
+                        <option value="partTime">Yarı Zamanlı</option>
+                        <option value="flexible">Esnek</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="specialSkills">Özel Yetenekler</label>
+                    <textarea id="specialSkills" name="specialSkills" placeholder="Örn: İlk yardım sertifikası, müzik aleti çalma, yemek yapma becerileri, vb."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="ageGroups">Tercih Ettiğiniz Yaş Grupları</label>
+                    <select id="ageGroups" name="ageGroups" multiple required>
+                        <option value="infant">Bebek (0-1 yaş)</option>
+                        <option value="toddler">Yürüme Çağı (1-3 yaş)</option>
+                        <option value="preschool">Okul Öncesi (3-5 yaş)</option>
+                        <option value="schoolAge">Okul Çağı (5-12 yaş)</option>
+                        <option value="teenager">Ergen (12+ yaş)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="additionalInfo">Ek Bilgiler</label>
+                    <textarea id="additionalInfo" name="additionalInfo" placeholder="Kendiniz hakkında eklemek istediğiniz başka bilgiler varsa buraya yazabilirsiniz."></textarea>
+                </div>
+                <button type="submit" class="submit-button">Kayıt Ol</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 BebeBakıcısıMerkezi. Tüm hakları saklıdır.</p>
+            <div>
+                <a href="kullanimKosullari.html">Kullanım Koşulları</a>
+                <a href="gizlilik.html">Gizlilik Politikası</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('.registration-form');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                if (password !== confirmPassword) {
+                    alert('Şifreler eşleşmiyor. Lütfen tekrar kontrol edin.');
+                    return;
+                }
+                alert('Kayıt formunuz başarıyla gönderildi. Teşekkür ederiz!');
+                // Burada form verilerini işlemek için gerçek bir API çağrısı yapılabilir.
+            });
+        });
+    </script>
+</body>
+</html>

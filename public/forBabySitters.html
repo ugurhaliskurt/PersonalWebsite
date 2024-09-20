@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bakıcılar İçin - BebeBakıcısıMerkezi</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #e6f2ff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4a90e2;
+            text-decoration: none;
+        }
+        .logo img {
+            width: 40px;
+            margin-right: 10px;
+        }
+        .nav-links a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #333;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: #ff69b4;
+        }
+        main {
+            padding: 2rem 0;
+        }
+        h1 {
+            color: #4a90e2;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .benefit-card {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .benefit-card h2 {
+            color: #ff69b4;
+            margin-bottom: 1rem;
+        }
+        .benefit-card img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1rem;
+        }
+        .cta {
+            text-align: center;
+            margin-top: 3rem;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: #ff69b4;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .cta-button:hover {
+            background-color: #ff1493;
+        }
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 1rem 0;
+            text-align: center;
+        }
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: #333;
+            margin: 2px 0;
+            transition: 0.4s;
+        }
+        @media screen and (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                background-color: #fff;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .nav-links a {
+                margin: 10px 0;
+                padding: 10px;
+                text-align: center;
+            }
+            .hamburger {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <a href="index.html" class="logo">
+                <img src="/placeholder.svg?height=40&width=40" alt="BebeBakıcısıMerkezi Logo">
+                BebeBakıcısıMerkezi
+            </a>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Ana Sayfa</a>
+                <a href="howWorks.html">Nasıl Çalışır</a>
+                <a href="forBabySitters.html">Bakıcılar İçin</a>
+                <a href="forParents.html">Ebeveynler İçin</a>
+                <a href="giris.html">Giriş</a>
+            </div>
+        </nav>
+    </header>
+
+    <script>
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+    </script>
+    
+    <main class="container">
+        <h1>Bakıcılar İçin</h1>
+        
+        <div class="benefits">
+            <div class="benefit-card">
+                <img src="/placeholder.svg?height=80&width=80" alt="Esnek Çalışma">
+                <h2>Esnek Çalışma Saatleri</h2>
+                <p>Kendi programınızı oluşturun ve size uygun zamanlarda çalışın. Tam zamanlı veya yarı zamanlı işler bulun.</p>
+            </div>
+            <div class="benefit-card">
+                <img src="/placeholder.svg?height=80&width=80" alt="Güvenli Ödeme">
+                <h2>Güvenli Ödeme</h2>
+                <p>Ödemelerinizi platformumuz üzerinden güvenle alın. Ödeme garantisi ve şeffaflık sağlıyoruz.</p>
+            </div>
+            <div class="benefit-card">
+                <img src="/placeholder.svg?height=80&width=80" alt="Profesyonel Gelişim">
+                <h2>Profesyonel Gelişim</h2>
+                <p>Çocuk bakımı ve gelişimi konularında ücretsiz eğitimler ve kaynaklar sunuyoruz. Kendinizi geliştirin ve daha iyi bir bakıcı olun.</p>
+            </div>
+            <div class="benefit-card">
+                <img src="/placeholder.svg?height=80&width=80" alt="Geniş Ağ">
+                <h2>Geniş Aile Ağı</h2>
+                <p>Binlerce aileye erişim sağlayın. İhtiyaçlarınıza ve tercihlerinize uygun ailelerle eşleşin.</p>
+            </div>
+        </div>
+
+        <div class="cta">
+            <h2>Hemen Başlayın</h2>
+            <p>BebeBakıcısıMerkezi'ne katılın ve yeni fırsatları keşfedin!</p>
+            <a href="#kayit" class="cta-button">Ücretsiz Kayıt Olun</a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 BebeBakıcısıMerkezi. Tüm hakları saklıdır.</p>
+            <div>
+                <a href="kullanimKosullari.html">Kullanım Koşulları</a>
+                <a href="gizlilik.html">Gizlilik Politikası</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
