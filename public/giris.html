@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş - BebeBakıcısıMerkezi</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #e6f2ff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4a90e2;
+            text-decoration: none;
+        }
+        .logo img {
+            width: 40px;
+            margin-right: 10px;
+        }
+        .nav-links a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #333;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: #ff69b4;
+        }
+        main {
+            padding: 2rem 0;
+        }
+        .login-container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #4a90e2;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .login-form input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .login-form button {
+            padding: 10px;
+            background-color: #ff69b4;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .login-form button:hover {
+            background-color: #ff1493;
+        }
+        .forgot-password, .register {
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .forgot-password a, .register a {
+            color: #4a90e2;
+            text-decoration: none;
+        }
+        .forgot-password a:hover, .register a:hover {
+            text-decoration: underline;
+        }
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 1rem 0;
+            text-align: center;
+        }
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <a href="index.html" class="logo">
+                <img src="/placeholder.svg?height=40&width=40" alt="BebeBakıcısıMerkezi Logo">
+                BebeBakıcısıMerkezi
+            </a>
+            <div class="nav-links">
+                <a href="nasil-calisir.html">Nasıl Çalışır</a>
+                <a href="bakicilar-icin.html">Bakıcılar İçin</a>
+                <a href="ebeveynler-icin.html">Ebeveynler İçin</a>
+                <a href="giris.html">Giriş</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="login-container">
+            <h1>Giriş Yap</h1>
+            <form class="login-form">
+                <input type="email" placeholder="E-posta Adresi" required>
+                <input type="password" placeholder="Şifre" required>
+                <button type="submit">Giriş Yap</button>
+            </form>
+            <div class="forgot-password">
+                <a href="sifremi-unuttum.html">Şifremi Unuttum</a>
+            </div>
+            <div class="register">
+                Hesabınız yok mu? 
+                <a href="kayit-ol-bakici.html">Bakıcı Olarak Kayıt Ol</a> | 
+                <a href="kayit-ol-ebeveyn.html">Ebeveyn Olarak Kayıt Ol</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 BebeBakıcısıMerkezi. Tüm hakları saklıdır.</p>
+            <div>
+                <a href="#kullanim-kosullari">Kullanım Koşulları</a>
+                <a href="#gizlilik-politikasi">Gizlilik Politikası</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
