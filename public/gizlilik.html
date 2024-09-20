@@ -80,6 +80,41 @@
         footer a:hover {
             text-decoration: underline;
         }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: #333;
+            margin: 2px 0;
+            transition: 0.4s;
+        }
+        @media screen and (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                background-color: #fff;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .nav-links a {
+                margin: 10px 0;
+                padding: 10px;
+                text-align: center;
+            }
+            .hamburger {
+                display: flex;
+            }
+        }
     </style>
 </head>
 <body>
@@ -89,6 +124,11 @@
                 <img src="/placeholder.svg?height=40&width=40" alt="BebeBakıcısıMerkezi Logo">
                 BebeBakıcısıMerkezi
             </a>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
             <div class="nav-links">
                 <a href="index.html">Ana Sayfa</a>
                 <a href="howWorks.html">Nasıl Çalışır</a>
@@ -99,6 +139,13 @@
         </nav>
     </header>
 
+    <script>
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+    </script>
+    
     <main class="container">
         <h1>Gizlilik Politikası</h1>
         
