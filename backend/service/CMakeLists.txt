@@ -12,8 +12,8 @@ add_library(${PROJECT_NAME}_lib ${SRC_LIST})
 
 target_link_libraries(${PROJECT_NAME}_lib
     communication
-    -lpqxx 
     pthread
+    database
 )
 # Add executable
 add_executable(${PROJECT_NAME} main.cpp )
