@@ -2,30 +2,46 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Lucide icons
     lucide.createIcons();
 
-    // Mobile menu toggle
+    const header = document.getElementById('header');
     const menuToggle = document.getElementById('menu-toggle');
-    const navMenu = document.querySelector('nav ul');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+    const sections = document.querySelectorAll('section');
+    const navItems = document.querySelectorAll('nav ul li a');
 
+    // Mobile menu toggle
     menuToggle.addEventListener('click', () => {
-        navMenu.classList.toggle('show');
+        mobileMenu.classList.toggle('show');
+        document.body.classList.toggle('menu-open');
+    });
+
+    // Close mobile menu when a link is clicked
+    
+    mobileMenuLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.remove('show');
+            document.body.classList.remove('menu-open');
+        });
     });
 
     // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
+            const target = document.querySelector(this.getAttribute('href'));
+            const headerOffset = 100;
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+            window.scrollTo({
+                top: offsetPosition,
                 behavior: 'smooth'
             });
         });
     });
 
     // Highlight active navigation item and change header background
-    const header = document.getElementById('header');
-    const sections = document.querySelectorAll('section');
-    const navItems = document.querySelectorAll('nav ul li a');
-
-    window.addEventListener('scroll', () => {
+    function updateActiveSection() {
         let current = '';
         sections.forEach(section => {
             const sectionTop = section.offsetTop;
@@ -48,7 +64,10 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             header.style.backgroundColor = 'rgba(30, 58, 138, 0.8)';
         }
-    });
+    }
+
+    window.addEventListener('scroll', updateActiveSection);
+    window.addEventListener('load', updateActiveSection);
 
     // Add parallax effect to profile photo
     const profileImage = document.getElementById('profile-image');
