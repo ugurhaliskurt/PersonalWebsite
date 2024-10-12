@@ -46,6 +46,18 @@ services:
     expose:
       - 5432  # Expose PostgreSQL database port
 
+  # Frontend service
+  frontend:
+    build: ./frontend  # The frontend directory should contain your React app
+    volumes:
+      - ./frontend:/app  # Mount the frontend app for real-time editing
+    ports:
+      - "3000:3000"  # Expose port 3000 for development (React's default)
+    environment:
+      - CHOKIDAR_USEPOLLING=true  # This helps with live reloading in Docker
+    depends_on:
+      - backend  # Backend needs to start before frontend if they interact
+
 volumes:
   caddy_data:
   caddy_config:
