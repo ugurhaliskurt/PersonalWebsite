@@ -1,319 +1,125 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BebeBakıcısıMerkezi - Mükemmel Bebek Bakıcınızı Bulun</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #e6f2ff;
-        }
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        header {
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            padding: 1rem 0;
-        }
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #4a90e2;
-        }
-        .logo img {
-            width: 40px;
-            margin-right: 10px;
-        }
-        .nav-links a {
-            margin-left: 20px;
-            text-decoration: none;
-            color: #333;
-            transition: color 0.3s;
-        }
-        .nav-links a:hover {
-            color: #ff69b4;
-        }
-        .hero {
-            background: linear-gradient(to right, #4a90e2, #9b59b6);
-            color: #fff;
-            padding: 4rem 0;
-            text-align: center;
-        }
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-        }
-        .search-form {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 2rem;
-        }
-        .search-form input {
-            padding: 10px;
-            font-size: 1rem;
-            border: none;
-            border-radius: 5px 0 0 5px;
-            width: 300px;
-        }
-        .search-form button {
-            padding: 10px 20px;
-            font-size: 1rem;
-            background-color: #ff69b4;
-            color: #fff;
-            border: none;
-            border-radius: 0 5px 5px 0;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .search-form button:hover {
-            background-color: #ff1493;
-        }
-        .features {
-            padding: 4rem 0;
-            background-color: #fff;
-        }
-        .features h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            color: #4a90e2;
-        }
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-        .feature-card {
-            background-color: #f0f8ff;
-            border-radius: 10px;
-            padding: 2rem;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .feature-card img {
-            width: 80px;
-            margin-bottom: 1rem;
-        }
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #4a90e2;
-        }
-        .testimonials {
-            padding: 4rem 0;
-            background-color: #ffe6f2;
-        }
-        .testimonials h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            color: #ff69b4;
-        }
-        .testimonial-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        .testimonial-card {
-            background-color: #fff;
-            border-radius: 10px;
-            padding: 2rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .testimonial-card img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            margin-bottom: 1rem;
-        }
-        .testimonial-card p {
-            font-style: italic;
-            margin-bottom: 1rem;
-        }
-        .testimonial-card .name {
-            font-weight: bold;
-            color: #ff69b4;
-        }
-        .cta {
-            background: linear-gradient(to right, #4a90e2, #9b59b6);
-            color: #fff;
-            padding: 4rem 0;
-            text-align: center;
-        }
-        .cta h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-        .cta p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-        }
-        .cta-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-        }
-        .cta-buttons button {
-            padding: 10px 20px;
-            font-size: 1rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .cta-buttons .primary {
-            background-color: #ff69b4;
-            color: #fff;
-        }
-        .cta-buttons .primary:hover {
-            background-color: #ff1493;
-        }
-        .cta-buttons .secondary {
-            background-color: #fff;
-            color: #4a90e2;
-        }
-        .cta-buttons .secondary:hover {
-            background-color: #e6f2ff;
-        }
-        footer {
-            background-color: #333;
-            color: #fff;
-            padding: 2rem 0;
-            text-align: center;
-        }
-        footer p {
-            margin-bottom: 1rem;
-        }
-        footer a {
-            color: #fff;
-            text-decoration: none;
-            margin: 0 10px;
-        }
-        footer a:hover {
-            text-decoration: underline;
-        }
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-            .search-form input {
-                width: 200px;
-            }
-            .features-grid, .testimonial-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <title>Your Name - Software Engineer</title>
+    <link rel="stylesheet" href="public/styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-    <header>
-        <nav class="container">
-            <div class="logo">
-                <img src="/placeholder.svg?height=40&width=40" alt="BebeBakıcısıMerkezi Logo">
-                BebeBakıcısıMerkezi
-            </div>
-            <div class="nav-links">
-                <a href="#nasil-calisir">Nasıl Çalışır</a>
-                <a href="#bakicilar-icin">Bakıcılar İçin</a>
-                <a href="#ebeveynler-icin">Ebeveynler İçin</a>
-                <a href="#giris">Giriş</a>
-            </div>
-        </nav>
+    <header id="header">
+        <div class="container">
+            <a href="#" class="logo">UHK</a>
+            <nav id="nav">
+                <button id="menu-toggle" aria-label="Toggle menu">
+                    <i data-lucide="menu"></i>
+                </button>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#skills">Skills</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
     <main>
-        <section class="hero">
+        <section id="home">
             <div class="container">
-                <h1>Mükemmel Bebek Bakıcınızı Bulun</h1>
-                <p>Güvenilir, deneyimli bebek bakıcılarıyla bağlantı kurun veya yeni bakıcılık işinizi bulun.</p>
-                <form class="search-form">
-                    <input type="text" placeholder="Konumunuzu girin" required>
-                    <button type="submit">Ara</button>
-                </form>
-            </div>
-        </section>
-
-        <section class="features">
-            <div class="container">
-                <h2>Neden Bizi Seçmelisiniz</h2>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <img src="/placeholder.svg?height=80&width=80" alt="Güvenilir Bakıcılar">
-                        <h3>Güvenilir Bakıcılar</h3>
-                        <p>Tüm bakıcılarımız kapsamlı bir güvenlik kontrolünden geçer.</p>
+                <div class="profile-container">
+                    <div class="profile-photo">
+                        <img src="public/photos/me.jpeg" alt="Ugur Halis Kurt" id="profile-image">
                     </div>
-                    <div class="feature-card">
-                        <img src="/placeholder.svg?height=80&width=80" alt="Esnek Programlama">
-                        <h3>Esnek Programlama</h3>
-                        <p>Birkaç saatlik veya düzenli bakım için bakıcı ayarlayın.</p>
-                    </div>
-                    <div class="feature-card">
-                        <img src="/placeholder.svg?height=80&width=80" alt="Huzur">
-                        <h3>Huzur</h3>
-                        <p>Platformumuz güvenli ve güvenilir çocuk bakımı sağlar.</p>
-                    </div>
-                    <div class="feature-card">
-                        <img src="/placeholder.svg?height=80&width=80" alt="Kolay Rezervasyon">
-                        <h3>Kolay Rezervasyon</h3>
-                        <p>Basit çevrimiçi rezervasyon ve yönetim sistemi.</p>
+                    <div class="profile-info">
+                        <h1>Uğur Halis Kurt</h1>
+                        <p>Software Engineer | Full Stack Developer | Problem Solver</p>
+                        <div class="cta-buttons">
+                            <a href="#contact" class="button">Contact Me</a>
+                            <a href="#projects" class="button button-outline">View Projects</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="testimonials">
+        <section id="about">
             <div class="container">
-                <h2>Ebeveynler Ne Diyor</h2>
-                <div class="testimonial-grid">
-                    <div class="testimonial-card">
-                        <img src="/placeholder.svg?height=80&width=80" alt="Ebeveyn 1">
-                        <p>"BebeBakıcısıMerkezi hayat kurtarıcı oldu! Çocuklarımızın bayıldığı harika bir bakıcı bulduk. Bu huzur paha biçilemez."</p>
-                        <span class="name">Ayşe Yılmaz</span>
+                <h2>About Me</h2>
+                <p>I'm a passionate software engineer with X years of experience in developing robust and scalable applications. My expertise spans across frontend and backend technologies, with a keen interest in [Your Interests/Specializations]. I thrive on solving complex problems and continuously learning new technologies to stay at the forefront of the ever-evolving tech landscape.</p>
+            </div>
+        </section>
+
+        <section id="skills">
+            <div class="container">
+                <h2>Skills</h2>
+                <div class="skills-grid">
+                    <div class="skill-card">
+                        <h3>Frontend</h3>
+                        <p>React, Vue.js, Angular, HTML5, CSS3, JavaScript, TypeScript</p>
                     </div>
-                    <div class="testimonial-card">
-                        <img src="/placeholder.svg?height=80&width=80" alt="Ebeveyn 2">
-                        <p>"Çalışan bir ebeveyn olarak, güvenilir çocuk bakımı bulmak her zaman bir zorluktu. BebeBakıcısıMerkezi bunu kolay ve stressiz hale getirdi."</p>
-                        <span class="name">Mehmet Kaya</span>
+                    <div class="skill-card">
+                        <h3>Backend</h3>
+                        <p>Node.js, Python, Java, C#, RESTful APIs, GraphQL</p>
                     </div>
-                    <div class="testimonial-card">
-                        <img src="/placeholder.svg?height=80&width=80" alt="Ebeveyn 3">
-                        <p>"Bu platformdaki bakıcıların kalitesi olağanüstü. BebeBakıcısıMerkezi'ni bir yılı aşkın süredir kullanıyoruz ve daha mutlu olamazdık."</p>
-                        <span class="name">Zeynep Demir</span>
+                    <div class="skill-card">
+                        <h3>Database</h3>
+                        <p>MySQL, PostgreSQL, MongoDB, Redis</p>
+                    </div>
+                    <div class="skill-card">
+                        <h3>DevOps</h3>
+                        <p>Docker, Kubernetes, CI/CD, AWS, Azure, Google Cloud</p>
+                    </div>
+                    <div class="skill-card">
+                        <h3>Tools</h3>
+                        <p>Git, JIRA, Confluence, Slack, VS Code</p>
+                    </div>
+                    <div class="skill-card">
+                        <h3>Methodologies</h3>
+                        <p>Agile, Scrum, Test-Driven Development, Microservices</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="cta">
+        <section id="projects">
             <div class="container">
-                <h2>Başlamaya Hazır mısınız?</h2>
-                <p>Bugün BebeBakıcısıMerkezi'ne katılın ve güvenilir bakıcılarla bağlantı kurun veya yeni bakıcılık işinizi bulun.</p>
-                <div class="cta-buttons">
-                    <button class="primary" id="signupBabysitter">Bakıcı Olarak Kaydol</button>
-                    <button class="secondary" id="findBabysitter">Bakıcı Bul</button>
+                <h2>Projects</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <h3>Project 1</h3>
+                        <p>A brief description of your project. What problem did it solve? What technologies did you use?</p>
+                        <a href="#" class="button button-outline">View Project</a>
+                    </div>
+                    <div class="project-card">
+                        <h3>Project 2</h3>
+                        <p>Another project description. Highlight your role and the impact of the project.</p>
+                        <a href="#" class="button button-outline">View Project</a>
+                    </div>
+                    <div class="project-card">
+                        <h3>Project 3</h3>
+                        <p>Describe another significant project. What challenges did you overcome?</p>
+                        <a href="#" class="button button-outline">View Project</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="container">
+                <h2>Contact Me</h2>
+                <div class="contact-buttons">
+                    <a href="mailto:ugurkurt90@gmail.com" class="button button-outline">
+                        <i data-lucide="mail"></i> Email
+                    </a>
+                    <a href="https://github.com/ugurhaliskurt" class="button button-outline">
+                        <i data-lucide="github"></i> GitHub
+                    </a>
+                    <a href="https://linkedin.com/in/uğur-halis-kurt-56b50987" class="button button-outline">
+                        <i data-lucide="linkedin"></i> LinkedIn
+                    </a>
                 </div>
             </div>
         </section>
@@ -321,45 +127,19 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2023 BebeBakıcısıMerkezi. Tüm hakları saklıdır.</p>
-            <div>
-                <a href="#kullanim-kosullari">Kullanım Koşulları</a>
-                <a href="#gizlilik-politikasi">Gizlilik Politikası</a>
-            </div>
+            <p>&copy; 2024 Your Name. All rights reserved.</p>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#skills">Skills</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
         </div>
     </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchForm = document.querySelector('.search-form');
-            searchForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                alert('Arama işlevi burada uygulanacak.');
-            });
-
-            const signupButton = document.getElementById('signupBabysitter');
-            const findButton = document.getElementById('findBabysitter');
-
-            signupButton.addEventListener('click', function() {
-                alert('Bakıcı kayıt süreci burada başlayacak.');
-            });
-
-            findButton.addEventListener('click', function() {
-                alert('Bakıcı arama süreci burada başlayacak.');
-            });
-
-            const navLinks = document.querySelectorAll('.nav-links a');
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href').substring(1);
-                    const targetElement = document.getElementById(targetId);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({ behavior: 'smooth' });
-                    }
-                });
-            });
-        });
-    </script>
+    <script src="public/script.js"></script>
 </body>
 </html>
