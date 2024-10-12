@@ -3,26 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
     lucide.createIcons();
 
     const header = document.getElementById('header');
-    const menuToggle = document.getElementById('menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
-    const mobileMenuLinks = mobileMenu.querySelectorAll('a');
     const sections = document.querySelectorAll('section');
     const navItems = document.querySelectorAll('nav ul li a');
-
-    // Mobile menu toggle
-    menuToggle.addEventListener('click', () => {
-        mobileMenu.classList.toggle('show');
-        document.body.classList.toggle('menu-open');
-    });
-
-    // Close mobile menu when a link is clicked
-    
-    mobileMenuLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            mobileMenu.classList.remove('show');
-            document.body.classList.remove('menu-open');
-        });
-    });
 
     // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -76,3 +59,17 @@ document.addEventListener('DOMContentLoaded', () => {
         profileImage.style.transform = `translateY(${scrollPosition * 0.3}px)`;
     });
 });
+
+// Mobile menu toggle function
+function toggleMobileMenu() {
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenu.classList.toggle('show');
+    document.body.classList.toggle('menu-open');
+}
+
+// Close mobile menu function
+function closeMobileMenu() {
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenu.classList.remove('show');
+    document.body.classList.remove('menu-open');
+}
