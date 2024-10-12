@@ -1,8 +1,7 @@
-http://localhost:80 {
-    reverse_proxy web:80
+http://ugurhaliskurt.com {
+    redir https://ugurhaliskurt.com{uri}  # Redirect HTTP to HTTPS
 }
 
-https://localhost:443 {
+https://ugurhaliskurt.com {
     reverse_proxy web:80
-    tls internal  # Use Caddy's internal CA for local development
 }
