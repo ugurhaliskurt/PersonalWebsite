@@ -4,6 +4,9 @@ __pycache__/
 *.pyc
 *.pyo
 
+#ignore Caddy
+Caddyfile/
+
 # Ignore Nginx
 nginx.conf
 

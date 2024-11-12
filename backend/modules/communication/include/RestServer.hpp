@@ -12,7 +12,7 @@ public:
     void shutdown();
 private:
     void setupRoutes();
-	void handleHello(const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response);
+	void handleDividends(const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response);
     void addCORSHeaders( Pistache::Http::ResponseWriter& response);
     void handleOptions(const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response);
     std::shared_ptr<Pistache::Http::Endpoint> endpoint;

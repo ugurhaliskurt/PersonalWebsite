@@ -1,6 +1,7 @@
 #include "RestServer.hpp"
 #include <pistache/router.h>
 #include <iostream>
+#include <nlohmann/json.hpp>
 
 RestServer::RestServer(Pistache::Address addr) : endpoint(std::make_shared<Pistache::Http::Endpoint>(addr)) {}
 
@@ -15,7 +16,7 @@ void RestServer::init(size_t threads) {
 
 void RestServer::setupRoutes() {
     using namespace Pistache::Rest;
-    Routes::Get(router, "/dividends", Routes::bind(&RestServer::handleHello, this));
+    Routes::Get(router, "/dividends", Routes::bind(&RestServer::handleDividends, this));
     Routes::Options(router, "/dividends", Routes::bind(&RestServer::handleOptions, this));  // Handle CORS preflight
     endpoint->setHandler(router.handler());
 }
@@ -40,10 +41,18 @@ void RestServer::shutdown() {
     endpoint->shutdown();
 }
 
-void RestServer::handleHello(const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
+void RestServer::handleDividends(const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
+
     response.headers().add<Pistache::Http::Header::AccessControlAllowOrigin>("*");
-    std::cout<<"this is called" << std::endl;
-    response.send(Pistache::Http::Code::Ok, R"({"message": "Hello from C++!"})");
-    // Set Content-Type header to JSON (example)
     response.headers().add<Pistache::Http::Header::ContentType>(MIME(Application, Json));
+    std::cout<<"this is called" << std::endl;
+    // Example dividend data
+    nlohmann::json dividendData = {
+        { {"date", "2024-01-15"}, {"amount", 1.23}, {"currency", "USD"} },
+        { {"date", "2024-04-15"}, {"amount", 1.35}, {"currency", "USD"} },
+        { {"date", "2024-07-15"}, {"amount", 1.40}, {"currency", "USD"} }
+    };
+
+    // Convert JSON data to string and send it
+    response.send(Pistache::Http::Code::Ok, dividendData.dump());
 }
