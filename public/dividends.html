@@ -177,7 +177,7 @@
 
                 try {
                     // Replace this with your actual API call
-                    const response = await fetch(`http://localhost:9080/dividends?symbol=${stockSymbol}&startDate=${years}`);
+                    const response = await fetch(`https://ugurhaliskurt.com/dividends?symbol=${stockSymbol}&startDate=${years}`);
                     if (!response.ok) {
                         throw new Error('Failed to fetch dividend data');
                     }

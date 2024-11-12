@@ -3,5 +3,6 @@ http://ugurhaliskurt.com {
 }
 
 https://ugurhaliskurt.com {
+    reverse_proxy /dividends/* backend:9080
     reverse_proxy web:80
 }
