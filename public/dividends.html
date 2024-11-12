@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Dividend Information</title>
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #3b82f6;
+            --background-color: #0f172a;
+            --text-color: #e2e8f0;
+            --card-background: #1e293b;
+            --hover-color: #2563eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--secondary-color);
+        }
+
+        .input-group {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        input[type="text"] {
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: 1px solid var(--secondary-color);
+            border-radius: 4px 0 0 4px;
+            background-color: var(--card-background);
+            color: var(--text-color);
+        }
+
+        button {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: var(--hover-color);
+        }
+
+        button:disabled {
+            background-color: #4b5563;
+            cursor: not-allowed;
+        }
+
+        .error {
+            background-color: #dc2626;
+            color: white;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+            background-color: var(--card-background);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--primary-color);
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+        }
+
+        .loading {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .spinner {
+            border: 4px solid var(--card-background);
+            border-top: 4px solid var(--secondary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Stock Dividend Information</h1>
+        <div class="input-group">
+            <input type="text" id="stockSymbol" placeholder="Enter stock symbol (e.g., AAPL)">
+            <button id="getDividends">Get Dividends</button>
+        </div>
+        <div id="error" class="error" style="display: none;"></div>
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Loading...</p>
+        </div>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const stockSymbolInput = document.getElementById('stockSymbol');
+            const getDividendsButton = document.getElementById('getDividends');
+            const errorDiv = document.getElementById('error');
+            const loadingDiv = document.getElementById('loading');
+            const resultsDiv = document.getElementById('results');
+
+            getDividendsButton.addEventListener('click', fetchDividends);
+
+            async function fetchDividends() {
+                const stockSymbol = stockSymbolInput.value.trim().toUpperCase();
+                if (!stockSymbol) {
+                    showError('Please enter a stock symbol');
+                    return;
+                }
+
+                showLoading(true);
+                hideError();
+                resultsDiv.innerHTML = '';
+
+                try {
+                    // Replace this with your actual API call
+                    const response = await fetch(`https://ugurhaliskurt.com/dividends?symbol=${stockSymbol}`);
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch dividend data');
+                    }
+                    const data = await response.json();
+                    displayDividends(stockSymbol, data);
+                } catch (err) {
+                    showError('Error fetching dividend data. Please try again.');
+                } finally {
+                    showLoading(false);
+                }
+            }
+
+            function displayDividends(symbol, dividends) {
+                if (dividends.length === 0) {
+                    resultsDiv.innerHTML = `<p>No dividend data found for ${symbol}.</p>`;
+                    return;
+                }
+
+                const table = `
+                    <h2>Dividend History for ${symbol}</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Amount</th>
+                                <th>Currency</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${dividends.map(dividend => `
+                                <tr>
+                                    <td>${dividend.date}</td>
+                                    <td>${dividend.amount.toFixed(2)}</td>
+                                    <td>${dividend.currency}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+
+                resultsDiv.innerHTML = table;
+            }
+
+            function showError(message) {
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+            }
+
+            function hideError() {
+                errorDiv.style.display = 'none';
+            }
+
+            function showLoading(isLoading) {
+                loadingDiv.style.display = isLoading ? 'block' : 'none';
+                getDividendsButton.disabled = isLoading;
+            }
+        });
+    </script>
+</body>
+</html>

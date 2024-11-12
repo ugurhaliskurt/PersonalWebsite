@@ -15,8 +15,8 @@ void RestServer::init(size_t threads) {
 
 void RestServer::setupRoutes() {
     using namespace Pistache::Rest;
-    Routes::Get(router, "/hello", Routes::bind(&RestServer::handleHello, this));
-    Routes::Options(router, "/hello", Routes::bind(&RestServer::handleOptions, this));  // Handle CORS preflight
+    Routes::Get(router, "/dividends", Routes::bind(&RestServer::handleHello, this));
+    Routes::Options(router, "/dividends", Routes::bind(&RestServer::handleOptions, this));  // Handle CORS preflight
     endpoint->setHandler(router.handler());
 }
 
