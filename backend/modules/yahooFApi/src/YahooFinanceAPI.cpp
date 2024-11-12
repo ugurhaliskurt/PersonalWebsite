@@ -1,82 +1,45 @@
-#include "yfapi.hpp"
-
-namespace yfapi {
+#include "YahooFinanceAPI.hpp"
+#include <nlohmann/json.hpp>
 
 YahooFinanceAPI::YahooFinanceAPI() {
-    this->_base_url =
-        "https://query1.finance.yahoo.com/v8/finance/chart/{ticker}?period1={start_time}&period2={end_time}&interval={interval}&events=div%7Csplit&events=history";
-    this->_interval = DAILY;
-    this->_col_name = "Open";
 }
 
-bool YahooFinanceAPI::string_replace(std::string& str, const std::string from, const std::string to) {
-    try {
-        size_t start = str.find(from);
-        if (start == std::string::npos) {
-            return false;
-        }
-        str.replace(start, from.length(), to);
-        return true;
-    } catch (const std::exception& e) {
-        spdlog::error("Exception in string_replace: {}", e.what());
-        return false;
-    } catch (...) {
-        spdlog::error("Unknown exception in string_replace");
-        return false;
-    }
+std::string YahooFinanceAPI::convertEpochToDateString(int epochTime) {
+    std::time_t time = epochTime;
+    std::tm* tm_ptr = std::gmtime(&time); // Convert epoch time to UTC time structure
+
+    // Format the date as YYYY-MM-DD
+    std::ostringstream oss;
+    oss << std::put_time(tm_ptr, "%Y-%m-%d");
+    return oss.str();
 }
 
-std::string YahooFinanceAPI::build_url(std::string ticker, std::string start_date, std::string end) {
+std::string YahooFinanceAPI::getStockDividends(std::string& stockSymbol, std::string& range) {
     try {
-        std::string url = this->_base_url;
-        string_replace(url, "{ticker}", ticker);
-        string_replace(url, "{start_time}", std::to_string(Formatter::dateStringToEpoch(start_date)));
-        string_replace(url, "{end_time}", std::to_string(Formatter::dateStringToEpoch(end)));
-        string_replace(url, "{interval}", get_api_interval_value(this->_interval));
-        return url;
+        std::string url = "https://query1.finance.yahoo.com/v8/finance/chart/" + stockSymbol + "?range=" + range +"y&interval=1mo&events=div%7Csplit&events=history";
+        auto responseString = download_file(url);
+        auto dividends = parseDividends(responseString);
+        return convertToJson(dividends);
     } catch (const std::exception& e) {
-        spdlog::error("Exception in build_url: {}", e.what());
         return "";
     } catch (...) {
-        spdlog::error("Unknown exception in build_url");
         return "";
     }
 }
 
-void YahooFinanceAPI::set_interval(Interval interval) {
-    try {
-        this->_interval = interval;
-    } catch (const std::exception& e) {
-        spdlog::error("Exception in set_interval: {}", e.what());
-    } catch (...) {
-        spdlog::error("Unknown exception in set_interval");
-    }
-}
-
-void YahooFinanceAPI::set_col_name(std::string name) {
-    try {
-        this->_col_name = name;
-    } catch (const std::exception& e) {
-        spdlog::error("Exception in set_col_name: {}", e.what());
-    } catch (...) {
-        spdlog::error("Unknown exception in set_col_name");
-    }
-}
 
 size_t YahooFinanceAPI::WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
     try {
         ((std::string*)userp)->append((char*)contents, size * nmemb);
         return size * nmemb;
     } catch (const std::exception& e) {
-        spdlog::error("Exception in WriteCallback: {}", e.what());
         return 0;
     } catch (...) {
-        spdlog::error("Unknown exception in WriteCallback");
         return 0;
     }
 }
 
-std::string YahooFinanceAPI::download_file(std::string url) {
+std::string YahooFinanceAPI::download_file(std::string& url) {
     try {
         CURL* curl;
         CURLcode res;
@@ -84,48 +47,65 @@ std::string YahooFinanceAPI::download_file(std::string url) {
         std::string readBuffer;
         if (curl) {
             curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL);
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+            curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L); // Disable SSL verification for testing
+            curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
+            curl_easy_setopt(curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3");
+            curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+
             res = curl_easy_perform(curl);
+            if (res != CURLE_OK) {
+                std::cerr << "cURL error: " << curl_easy_strerror(res) << std::endl;
+            }
             curl_easy_cleanup(curl);
         }
         return readBuffer;
     } catch (const std::exception& e) {
-        spdlog::error("Exception in download_file: {}", e.what());
+        std::cerr << "Exception: " << e.what() << std::endl;
         return "";
     } catch (...) {
-        spdlog::error("Unknown exception in download_file");
+        std::cerr << "Unknown error occurred." << std::endl;
         return "";
     }
 }
 
-std::string YahooFinanceAPI::get_ticker_data(std::string ticker, std::string start_date, std::string end) {
+std::vector<Dividend> YahooFinanceAPI::parseDividends( std::string &responseString )
+{
+    std::vector<Dividend> result;
     try {
-        std::string url = build_url(ticker, start_date, end);
-        std::time_t now = std::time(0);
-        return download_file(url);
-    } catch (const std::exception& e) {
-        spdlog::error("Exception in get_ticker_data: {}", e.what());
-        return "";
-    } catch (...) {
-        spdlog::error("Unknown exception in get_ticker_data");
-        return "";
+        auto jsonData = nlohmann::json::parse(responseString);
+        // Extract dividend data (this depends on Yahoo Finance's actual response format)
+        if (jsonData.contains("chart") && jsonData["chart"].contains("result")) {
+            auto dividends = jsonData["chart"]["result"][0]["events"]["dividends"];
+            if (!dividends.empty()) {
+                for (auto& [key, dividend] : dividends.items()) {
+                    // Convert numeric types to strings
+                    std::string dateStr = convertEpochToDateString(dividend["date"].get<int>());
+                    std::string amountStr = std::to_string(dividend["amount"].get<double>());
+                    result.emplace_back(Dividend(dateStr, amountStr));
+                    std::cout << "Date: " << dividend["date"] << ", Amount: " << dividend["amount"] << "\n";
+                }
+            } else {
+                std::cout << "No dividend data found for .\n";
+            }
+        }
+    } catch (const nlohmann::json::exception& e) {
+        std::cerr << "Error parsing JSON: " << e.what() << std::endl;
     }
+    return result;
 }
 
-std::map<std::string, double> YahooFinanceAPI::createUsdTlMapbyDate(const std::string& start_date) {
-    try {
-        auto current_date = getCurrentDate();
-        std::string usdTl = get_ticker_data("TRY=X", start_date, current_date);
-        return Formatter::convertDateValueMap(usdTl);
-    } catch (const std::exception& e) {
-        spdlog::error("Exception in createUsdTlMapbyDate: {}", e.what());
-        return {};
-    } catch (...) {
-        spdlog::error("Unknown exception in createUsdTlMapbyDate");
-        return {};
+std::string YahooFinanceAPI::convertToJson(std::vector<Dividend>& dividends)
+{
+    nlohmann::json jsonDividends = nlohmann::json::array();
+    
+    for (const auto& dividend : dividends) {
+        jsonDividends.push_back({
+            {"date", dividend.date},
+            {"amount", std::stod(dividend.amount)}, // Convert string to double
+            {"currency", dividend.currency}
+        });
     }
+    return jsonDividends.dump();
 }
-
-}  // namespace yfapi

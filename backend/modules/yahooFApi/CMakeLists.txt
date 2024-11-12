@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(communication)
+project(yahooFApi)
 
 set(INCLUDE_DIRECTORIES
 	include
@@ -9,8 +9,6 @@ set(SYSTEM_INCLUDE_DIRECTORIES
 )
 
 set(LINK_LIBRARIES
-    -lpistache
-    yahooFApi
 )
 
 

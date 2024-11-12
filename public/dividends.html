@@ -45,15 +45,22 @@
             display: flex;
             justify-content: center;
             margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
-        input[type="text"] {
+        input[type="text"],
+        input[type="number"] {
             padding: 0.5rem;
             font-size: 1rem;
             border: 1px solid var(--secondary-color);
-            border-radius: 4px 0 0 4px;
+            border-radius: 4px;
             background-color: var(--card-background);
             color: var(--text-color);
+        }
+
+        input[type="number"] {
+            width: 80px;
         }
 
         button {
@@ -62,7 +69,7 @@
             background-color: var(--secondary-color);
             color: var(--text-color);
             border: none;
-            border-radius: 0 4px 4px 0;
+            border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
@@ -128,6 +135,7 @@
         <h1>Stock Dividend Information</h1>
         <div class="input-group">
             <input type="text" id="stockSymbol" placeholder="Enter stock symbol (e.g., AAPL)">
+            <input type="number" id="yearsInput" min="1" max="20" placeholder="Years">
             <button id="getDividends">Get Dividends</button>
         </div>
         <div id="error" class="error" style="display: none;"></div>
@@ -141,6 +149,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const stockSymbolInput = document.getElementById('stockSymbol');
+            const yearsInput = document.getElementById('yearsInput');
             const getDividendsButton = document.getElementById('getDividends');
             const errorDiv = document.getElementById('error');
             const loadingDiv = document.getElementById('loading');
@@ -150,8 +159,15 @@
 
             async function fetchDividends() {
                 const stockSymbol = stockSymbolInput.value.trim().toUpperCase();
+                const years = parseInt(yearsInput.value, 10);
+
                 if (!stockSymbol) {
                     showError('Please enter a stock symbol');
+                    return;
+                }
+
+                if (isNaN(years) || years < 1 || years > 20) {
+                    showError('Please enter a valid number of years (1-20)');
                     return;
                 }
 
@@ -161,12 +177,12 @@
 
                 try {
                     // Replace this with your actual API call
-                    const response = await fetch(`http://localhost:9080/dividends?symbol=${stockSymbol}`);
+                    const response = await fetch(`http://localhost:9080/dividends?symbol=${stockSymbol}&startDate=${years}`);
                     if (!response.ok) {
                         throw new Error('Failed to fetch dividend data');
                     }
                     const data = await response.json();
-                    displayDividends(stockSymbol, data);
+                    displayDividends(stockSymbol, data, years);
                 } catch (err) {
                     showError('Error fetching dividend data. Please try again.');
                 } finally {
@@ -174,14 +190,14 @@
                 }
             }
 
-            function displayDividends(symbol, dividends) {
+            function displayDividends(symbol, dividends, years) {
                 if (dividends.length === 0) {
-                    resultsDiv.innerHTML = `<p>No dividend data found for ${symbol}.</p>`;
+                    resultsDiv.innerHTML = `<p>No dividend data found for ${symbol} in the last ${years} year${years > 1 ? 's' : ''}.</p>`;
                     return;
                 }
 
                 const table = `
-                    <h2>Dividend History for ${symbol}</h2>
+                    <h2>Dividend History for ${symbol} (Last ${years} year${years > 1 ? 's' : ''})</h2>
                     <table>
                         <thead>
                             <tr>
