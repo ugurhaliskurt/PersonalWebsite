@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y \
     meson \
     ninja-build \
     nlohmann-json3-dev \
+    gdb \
     && apt-get clean
 
 # Install GoogleTest from source
