@@ -33,6 +33,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-mydatabase}
     ports:
       - "9080:9080"  # Expose for backend API or services if needed (adjust if necessary)
+    command: ./build/service/BasicService
 
   # PostgreSQL Database
   postgres:
