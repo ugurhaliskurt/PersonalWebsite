@@ -1,0 +1,19 @@
+# Use the latest Rust version
+FROM rust:latest AS builder
+
+WORKDIR /app
+
+# Ensure Rust is up-to-date
+RUN rustup update stable && rustup default stable
+
+# Copy the Rust project
+COPY . /app
+
+# Build the project
+RUN cargo build --release
+
+# Expose API port
+EXPOSE 8080
+
+# Run the Rust backend
+CMD ["tail", "-f", "/dev/null"]

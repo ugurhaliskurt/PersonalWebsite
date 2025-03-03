@@ -33,7 +33,20 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-mydatabase}
     ports:
       - "9080:9080"  # Expose for backend API or services if needed (adjust if necessary)
-    command: ./build/service/BasicService
+    # command: ./build/service/BasicService
+
+  # Rust Backend
+  rust_backend:
+    build: ./rust_backend  # Dockerfile will be in the rust_backend directory
+    volumes:
+      - ./rust_backend:/app  # Mount Rust backend code for real-time editing
+    depends_on:
+      - postgres  # Ensure PostgreSQL starts before Rust backend
+    environment:
+      DATABASE_URL: postgres://user:password@postgres:5432/mydatabase
+      RUST_LOG: info
+    ports:
+      - "8080:8080"  # Expose Rust backend API
 
   # PostgreSQL Database
   postgres:
