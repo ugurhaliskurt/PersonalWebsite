@@ -4,5 +4,6 @@ http://ugurhaliskurt.com {
 
 https://ugurhaliskurt.com {
     reverse_proxy /dividends* personalwebsite-backend-1:9080
+    reverse_proxy /coins* personalwebsite_rust_backend_1:8080
     reverse_proxy web:80
 }

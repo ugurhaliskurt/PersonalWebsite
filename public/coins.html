@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Price Tracker</title>
+    <style>
+        /* Similar styling as before */
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #3b82f6;
+            --background-color: #0f172a;
+            --text-color: #e2e8f0;
+            --card-background: #1e293b;
+            --hover-color: #2563eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--secondary-color);
+        }
+
+        .input-group {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: 1px solid var(--secondary-color);
+            border-radius: 4px;
+            background-color: var(--card-background);
+            color: var(--text-color);
+        }
+
+        input[type="number"] {
+            width: 80px;
+        }
+
+        button {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: var(--hover-color);
+        }
+
+        button:disabled {
+            background-color: #4b5563;
+            cursor: not-allowed;
+        }
+
+        .error {
+            background-color: #dc2626;
+            color: white;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .loading {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .spinner {
+            border: 4px solid var(--card-background);
+            border-top: 4px solid var(--secondary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #chart-container {
+            width: 100%;
+            height: 400px;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Crypto Price Tracker</h1>
+        <div class="input-group">
+            <input type="text" id="coinName" placeholder="Enter coin name (e.g., bitcoin)">
+            <input type="number" id="daysInput" min="1" max="365" placeholder="Days (1-365)">
+            <button id="getChart">Get Price Chart</button>
+        </div>
+        <div id="error" class="error" style="display: none;"></div>
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Loading...</p>
+        </div>
+        <div id="chart-container">
+            <canvas id="priceChart"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const coinNameInput = document.getElementById('coinName');
+            const daysInput = document.getElementById('daysInput');
+            const getChartButton = document.getElementById('getChart');
+            const errorDiv = document.getElementById('error');
+            const loadingDiv = document.getElementById('loading');
+            const chartContainer = document.getElementById('chart-container');
+            let priceChart;  // To hold the chart instance
+
+            getChartButton.addEventListener('click', fetchChartData);
+
+            async function fetchChartData() {
+                const coinName = coinNameInput.value.trim().toLowerCase();
+                const days = parseInt(daysInput.value, 10);
+
+                if (!coinName) {
+                    showError('Please enter a coin name');
+                    return;
+                }
+
+                if (isNaN(days) || days < 1 || days > 365) {
+                    showError('Please enter a valid number of days (1-365)');
+                    return;
+                }
+
+                showLoading(true);
+                hideError();
+
+                try {
+                    const response = await fetch(`http://localhost:8080/price?coin=${coinName}&days=${days}`);
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch price data');
+                    }
+                    const data = await response.json();
+                    displayChart(data);
+                } catch (err) {
+                    showError('Error fetching price data. Please try again.');
+                } finally {
+                    showLoading(false);
+                }
+            }
+
+            function displayChart(data) {
+                // Data should have { prices: [[timestamp, price], ...] }
+                const timestamps = data.prices.map(item => new Date(item[0] * 1000).toLocaleDateString());
+                const prices = data.prices.map(item => item[1]);
+
+                // If the chart already exists, destroy it before creating a new one
+                if (priceChart) {
+                    priceChart.destroy();
+                }
+
+                // Create a new chart
+                const ctx = document.getElementById('priceChart').getContext('2d');
+                priceChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: timestamps,
+                        datasets: [{
+                            label: 'Price',
+                            data: prices,
+                            borderColor: '#3b82f6',
+                            fill: false,
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                type: 'category',
+                                title: {
+                                    display: true,
+                                    text: 'Date'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Price (USD)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function showError(message) {
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+            }
+
+            function hideError() {
+                errorDiv.style.display = 'none';
+            }
+
+            function showLoading(isLoading) {
+                loadingDiv.style.display = isLoading ? 'block' : 'none';
+                getChartButton.disabled = isLoading;
+            }
+        });
+    </script>
+</body>
+</html>

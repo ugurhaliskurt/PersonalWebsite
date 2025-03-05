@@ -27,7 +27,7 @@ caddy_config/
 build/
 
 rust_backend/target/
-
+rust_backend/crypto_tracker/target/
 # Node modules (if you add any JS frameworks later)
 node_modules/
 
