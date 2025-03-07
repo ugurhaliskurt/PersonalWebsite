@@ -3,10 +3,18 @@ use reqwest;
 use crate::models::MarketChart; // Import the MarketChart struct from models.rs
 use actix_web::{web, Responder, HttpResponse};
 use serde::Serialize;
+use serde::Deserialize;
 
 #[derive(Serialize)]
 pub struct ErrorResponse {
     pub error: String,
+}
+
+// Define a struct for the query parameters
+#[derive(Deserialize)]
+pub struct PriceQuery {
+    coin: String,
+    days: i32,
 }
 
 async fn fetch_crypto_price(url: &str) -> Result<MarketChart, reqwest::Error> {
@@ -15,9 +23,11 @@ async fn fetch_crypto_price(url: &str) -> Result<MarketChart, reqwest::Error> {
 }
 
 pub async fn get_price_data(
-    coin: web::Path<String>, 
-    days: web::Path<i32>
+    query: web::Query<PriceQuery> // Capture query parameters
 ) -> impl Responder {
+    let coin = &query.coin;
+    let days = query.days;
+
     let url = format!(
         "https://api.coingecko.com/api/v3/coins/{}/market_chart?vs_currency=usd&days={}",
         coin, days

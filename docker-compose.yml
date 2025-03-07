@@ -7,6 +7,8 @@ services:
       - ./public:/usr/share/nginx/html  # Mount the public folder for real-time editing
     expose:
       - 80  # Correctly exposing port 80 to other services in the same network
+    networks:
+      - my_network  # Add the service to the defined network
 
   caddy:
     image: caddy:latest
@@ -19,6 +21,8 @@ services:
       - caddy_config:/config
     depends_on:
       - web
+    networks:
+      - my_network  # Add the service to the defined network
 
   # Backend
   backend:
@@ -34,6 +38,8 @@ services:
     ports:
       - "9080:9080"  # Expose for backend API or services if needed (adjust if necessary)
     # command: ./build/service/BasicService
+    networks:
+      - my_network  # Add the service to the defined network
 
   # Rust Backend
   rust_backend:
@@ -46,7 +52,9 @@ services:
       DATABASE_URL: postgres://user:password@postgres:5432/mydatabase
       RUST_LOG: info
     ports:
-      - "8080:8080"  # Expose Rust backend API
+      - "9081:9081"  # Expose Rust backend API
+    networks:
+      - my_network  # Add the service to the defined network
 
   # PostgreSQL Database
   postgres:
@@ -59,8 +67,14 @@ services:
       - pg_data:/var/lib/postgresql/data
     expose:
       - 5432  # Expose PostgreSQL database port
+    networks:
+      - my_network  # Add the service to the defined network
 
 volumes:
   caddy_data:
   caddy_config:
   pg_data:
+
+networks:
+  my_network:
+    driver: bridge  # Explicitly define a network (bridge is default)

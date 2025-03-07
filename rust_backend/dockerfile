@@ -13,7 +13,7 @@ COPY . /app
 RUN cargo build --release
 
 # Expose API port
-EXPOSE 8080
+EXPOSE 9081
 
 # Run the Rust backend
 CMD ["tail", "-f", "/dev/null"]

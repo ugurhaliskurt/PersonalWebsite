@@ -4,6 +4,10 @@ http://ugurhaliskurt.com {
 
 https://ugurhaliskurt.com {
     reverse_proxy /dividends* personalwebsite-backend-1:9080
-    reverse_proxy /coins* personalwebsite_rust_backend_1:8080
+    reverse_proxy /price* personalwebsite-rust_backend-1:9081
     reverse_proxy web:80
+
+    @favicon path /favicon.ico
+    respond @favicon 204
 }
+

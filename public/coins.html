@@ -168,13 +168,14 @@
                 hideError();
 
                 try {
-                    const response = await fetch(`http://localhost:8080/price?coin=${coinName}&days=${days}`);
+                    const response = await fetch(`https://ugurhaliskurt.com/price?coin=${coinName}&days=${days}`);
                     if (!response.ok) {
                         throw new Error('Failed to fetch price data');
                     }
                     const data = await response.json();
                     displayChart(data);
                 } catch (err) {
+                    console.error(err); // Log the actual error
                     showError('Error fetching price data. Please try again.');
                 } finally {
                     showLoading(false);

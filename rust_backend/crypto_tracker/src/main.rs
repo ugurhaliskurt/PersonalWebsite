@@ -8,12 +8,13 @@ use actix_cors::Cors;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    println!("🚀 Server is starting...");
     HttpServer::new(|| {
         App::new()
             .wrap(Cors::default()) // Enable CORS
-            .route("/price/{coin}/{days}", web::get().to(get_price_data)) // Define the route with parameters
+            .route("/price", web::get().to(get_price_data))
     })
-    .bind("127.0.0.1:8080")? // Bind the server to a specific address and port
+    .bind("0.0.0.0:9081")? // Bind the server to a specific address and port
     .run()
     .await
 }
