@@ -1,4 +1,4 @@
-# Use the latest Rust version
+# Use the latest Rust version for building
 FROM rust:latest AS builder
 
 WORKDIR /app
@@ -6,14 +6,22 @@ WORKDIR /app
 # Ensure Rust is up-to-date
 RUN rustup update stable && rustup default stable
 
-# Copy the Rust project
-COPY . /app
+COPY ./crypto_tracker/ ./crypto_tracker/
 
-# Build the project
+# Pre-fetch dependencies
+WORKDIR /app/crypto_tracker
+RUN cargo fetch
+
+# Build the project in release mode
 RUN cargo build --release
 
-# Expose API port
-EXPOSE 9081
+# Final stage
+FROM debian:bookworm
 
-# Run the Rust backend
-CMD ["tail", "-f", "/dev/null"]
+RUN apt-get update && apt-get install -y libssl3 ca-certificates && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+COPY --from=builder /app/crypto_tracker/target/release/crypto_tracker .
+
+EXPOSE 9081
+CMD ["./crypto_tracker"]

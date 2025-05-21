@@ -1,5 +1,5 @@
 # Use an Ubuntu-based image for flexibility
-FROM ubuntu:22.04
+FROM ubuntu:22.04 AS builder
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
@@ -40,11 +40,35 @@ RUN git clone https://github.com/oktal/pistache.git /pistache \
 # Install PostgreSQL client libraries and headers for C++
 RUN apt-get install -y postgresql-client
 
-# Set the working directory
+# Copy source code
 WORKDIR /app
+COPY . .
+# Build your C++ project (adjust this depending on your structure)
+RUN mkdir -p build && cd build && cmake .. && make -j$(nproc)
+# ---------- Stage 2: Runtime ----------
+FROM ubuntu:22.04 AS runtime
 
-# Expose the port the app runs on
+# Install only runtime libraries
+RUN apt-get update && apt-get install -y \
+    libcurl4 \
+    libpq5 \
+    libevent-dev \
+    libpqxx-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy built binary from builder
+WORKDIR /app
+COPY --from=builder /app/build/service/BasicService .
+
+# Copy Pistache runtime library (modify path according to find command result)
+COPY --from=builder /usr/local/lib/x86_64-linux-gnu/libpistache.so* /usr/local/lib/
+
+# Make sure dynamic linker can find Pistache
+ENV LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+
+# Expose service port
 EXPOSE 9080
 
-# Keep container alive for development (you can manually run scripts)
-CMD ["tail", "-f", "/dev/null"]
+# Run the service
+CMD ["./BasicService"]

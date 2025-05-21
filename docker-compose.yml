@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   web:
@@ -27,8 +26,8 @@ services:
   # Backend
   backend:
     build: ./backend  # Dockerfile will be in the backend directory
-    volumes:
-      - ./backend:/app  # Mount the backend code for real-time editing
+    #volumes:
+    #  - ./backend:/app  # Mount the backend code for real-time editing
     depends_on:
       - postgres  # Ensure PostgreSQL starts before backend
     environment:
@@ -43,9 +42,9 @@ services:
 
   # Rust Backend
   rust_backend:
-    build: ./rust_backend  # Dockerfile will be in the rust_backend directory
-    volumes:
-      - ./rust_backend:/app  # Mount Rust backend code for real-time editing
+    build: ./rust_backend  # Use the correct directory for Rust backend
+    #volumes:
+    #  - ./rust_backend/crypto_tracker:/app/crypto_tracker  # Mount only source code
     depends_on:
       - postgres  # Ensure PostgreSQL starts before Rust backend
     environment:
