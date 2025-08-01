@@ -77,3 +77,4 @@ volumes:
 networks:
   my_network:
     driver: bridge  # Explicitly define a network (bridge is default)
+    external: true

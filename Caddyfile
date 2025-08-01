@@ -1,3 +1,15 @@
+http://liveinistanbul.today {
+    redir https://liveinistanbul.today{uri}
+}
+
+# 2. HTTPS site tanımı
+https://liveinistanbul.today {
+    reverse_proxy real-estate-realestate_web-1:80  # veya react_web, ya da nginx'li web container neyse
+
+    @favicon path /favicon.ico
+    respond @favicon 204
+}
+
 http://ugurhaliskurt.com {
     redir https://ugurhaliskurt.com{uri}  # Redirect HTTP to HTTPS
 }
@@ -5,7 +17,7 @@ http://ugurhaliskurt.com {
 https://ugurhaliskurt.com {
     reverse_proxy /dividends* personalwebsite-backend-1:9080
     reverse_proxy /price* personalwebsite-rust_backend-1:9081
-    reverse_proxy web:80
+    reverse_proxy personalwebsite-web-1:80
 
     @favicon path /favicon.ico
     respond @favicon 204
